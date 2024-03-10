@@ -36,3 +36,4 @@ Route::get('expenses', [TransactionController::class, 'expenses']);
 Route::post('expenses', [TransactionController::class, 'addPurchase']);
 
 Route::get('incomes', [TransactionController::class, 'incomes']);
+Route::post('incomes', [TransactionController::class, 'depositCheck']);

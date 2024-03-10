@@ -17,12 +17,15 @@ class TransactionFactory extends Factory
      */
     public function definition()
     {
-        $transactionTypes = TransactionType::values();
-
         return [
-            'description' => $this->faker->name(),
-            'amount' => $this->faker->randomFloat(3, 0, 100),
-            'type' => $this->faker->randomElement($transactionTypes),
+            'description' => fake()->name(),
+            'amount' => fake()->randomFloat(3, 0, 100),
+            'type' => TransactionType::Expense->value,
         ];
+    }
+
+    public function income()
+    {
+        return $this->state(fn () => ['type' => TransactionType::Income->value]);
     }
 }

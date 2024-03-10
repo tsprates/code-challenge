@@ -4,17 +4,20 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\CheckStatus;
 use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -48,6 +51,26 @@ class User extends Authenticatable implements JWTSubject
         'is_admin' => 'boolean',
     ];
 
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
@@ -67,23 +90,27 @@ class User extends Authenticatable implements JWTSubject
             ->where('type', TransactionType::Expense->value);
     }
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    public function currentAmountIncomes()
     {
-        return $this->getKey();
+        return $this->incomes()
+            ->whereHas('check', fn ($query) => $query->where('status', CheckStatus::Accepted->value))
+            ->sum('amount');
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
+    public function currentAmountExpenses()
     {
-        return [];
+        return $this->expenses->sum('amount');
+    }
+
+    public function validTransactions()
+    {
+        $acceptedIncomeIds = Transaction::whereHas('check', function ($query) {
+            $query->where('status', CheckStatus::Accepted->value);
+        })->where('type', TransactionType::Income->value)->select('id');
+
+        return Transaction::where('type', TransactionType::Expense->value)
+            ->orWhereIn('id', $acceptedIncomeIds)
+            ->orderBy('created_at')
+            ->get();
     }
 }

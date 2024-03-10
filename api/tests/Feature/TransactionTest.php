@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
@@ -87,6 +89,7 @@ class TransactionTest extends TestCase
 
         $accessToken = $this->login()['access_token'];
 
+        
         $payload = [
             'amount' => '10.5',
             // no description
@@ -97,5 +100,64 @@ class TransactionTest extends TestCase
             ->post('/api/expenses', $payload)
             ->assertBadRequest()
             ->assertJsonValidationErrors(['description']);
+    }
+
+    public function test_deposit_check()
+    {
+        Storage::fake();
+
+        User::factory($this->fakeCredentials())->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $payload = [
+            'amount' => 10.5,
+            'description' => 'Test income',
+            'picture' => UploadedFile::fake()->image('check.jpg', 640, 380),
+        ];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->post('/api/incomes', $payload)
+            ->assertCreated();
+    }
+    
+    public function test_fails_deposit_check_with_missing_picture()
+    {
+        Storage::fake();
+
+        User::factory($this->fakeCredentials())->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $payload = [
+            'amount' => 10.5,
+            'description' => 'Test income',
+        ];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->post('/api/incomes', $payload)
+            ->assertJsonValidationErrors(['picture']);
+    }
+    
+    public function test_fails_deposit_check_with_invalid_size_picture()
+    {
+        Storage::fake();
+
+        User::factory($this->fakeCredentials())->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $payload = [
+            'amount' => 10.5,
+            'description' => 'Test income',
+            'picture' => UploadedFile::fake()->image('check.jpg', 800, 600), // image size invalid
+        ];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->post('/api/incomes', $payload)
+            ->assertJsonValidationErrors(['picture']);
     }
 }
