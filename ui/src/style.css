@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .header {
+    @apply max-w-screen-md mx-auto bg-blue-300 text-white text-center pt-12 pb-2 relative
+  }
+
+  .mask {
+    @apply absolute inset-0 max-w-full max-h-full bg-black/30
+  }
+
+  .nav {
+    @apply absolute inset-0 max-h-full w-52 bg-blue-600 text-white -translate-x-52 z-10
+  }
+  
+  .nav-header {
+    @apply py-8 px-4 bg-blue-300 text-center text-lg font-bold
+  }
+  
+  .nav-list {
+    @apply flex flex-col py-4
+  }
+
+  .nav-item {
+    @apply pl-4 py-4 hover:bg-blue-400/50 flex items-center justify-start gap-2
+  }
+
+  .nav-label {
+    @apply text-xs font-bold uppercase
+  }
+
+  .nav-icon {
+    @apply text-blue-400
+  }
+}
