@@ -31,5 +31,8 @@ Route::group([
 });
 
 Route::get('transactions', [TransactionController::class, 'index']);
+
 Route::get('expenses', [TransactionController::class, 'expenses']);
+Route::post('expenses', [TransactionController::class, 'addPurchase']);
+
 Route::get('incomes', [TransactionController::class, 'incomes']);

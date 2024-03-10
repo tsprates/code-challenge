@@ -17,6 +17,10 @@ class Transaction extends Model
         'user_id', 'deleted_at', 'updated_at'
     ];
 
+    protected $fillable = [
+        'amount', 'description', 'type', 'user_id'
+    ];
+
     protected $casts = [
         'created_at' => 'datetime:d/m/Y, h:i A',
     ];

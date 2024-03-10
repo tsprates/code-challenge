@@ -2,6 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionType;
+use App\Http\Requests\StoreExpenseRequest;
+use App\Models\Transaction;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
+
 class TransactionController extends Controller
 {
     public function index()
@@ -27,5 +34,26 @@ class TransactionController extends Controller
         $user = auth()->user();
 
         return $user->expenses->all();
+    }
+
+    public function addPurchase(Request $request)
+    {
+        $data = $request->only(['amount', 'description']);
+
+        $validator= Validator::make($data, (new StoreExpenseRequest())->rules());
+        if ($validator->fails()) {
+            return response()
+                ->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
+        }
+
+        $expense = Transaction::create([
+            'amount' => $data['amount'],
+            'description' => $data['description'],
+            'type' => TransactionType::Expense->value,
+            'user_id' => auth()->user()->id,
+        ]);
+
+        return response()
+            ->json($expense, Response::HTTP_CREATED);
     }
 }
