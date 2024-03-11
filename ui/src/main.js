@@ -8,10 +8,12 @@ import Expenses from './components/Expenses.vue'
 import Incomes from './components/Incomes.vue'
 import Login from './components/Login.vue'
 import NotFound from './components/NotFound.vue'
+import SignUp from './components/SignUp.vue'
 import './style.css'
 
 const routes = [
     { path: '/login', component: Login, name: 'login' },
+    { path: '/signup', component: SignUp, name: 'signUp' },
     { path: '/', redirect: '/login' },
     { path: '/balance', component: Balance, name: 'balance' },
     { path: '/incomes', component: Incomes, name: 'incomes' },
