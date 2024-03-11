@@ -30,10 +30,12 @@ Route::group([
     Route::post('me', [AuthController::class, 'me'])->name('me');
 });
 
-Route::get('transactions', [TransactionController::class, 'index']);
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('transactions', [TransactionController::class, 'index']);
 
-Route::get('expenses', [TransactionController::class, 'expenses']);
-Route::post('expenses', [TransactionController::class, 'addPurchase']);
+    Route::get('expenses', [TransactionController::class, 'expenses']);
+    Route::post('expenses', [TransactionController::class, 'addPurchase']);
 
-Route::get('incomes', [TransactionController::class, 'incomes']);
-Route::post('incomes', [TransactionController::class, 'depositCheck']);
+    Route::get('incomes', [TransactionController::class, 'incomes']);
+    Route::post('incomes', [TransactionController::class, 'depositCheck']);
+});

@@ -30,9 +30,7 @@ class TransactionController extends Controller
     {
         $user = auth()->user();
 
-        return $user->incomes()
-            ->with('check')
-            ->get();
+        return $user->incomes()->with('check')->get();
     }
 
     public function expenses()
