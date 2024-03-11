@@ -14,7 +14,8 @@
                     <h4 class="font-semibold text-sm">Income</h4>
                     <span class="text-2xl font-semibold">${{ total_income }}</span>
                 </span>
-                <div class="flex flex-col items-center justify-center w-1/3">
+                <div class="flex flex-col items-center justify-center w-1/3 active:text-blue-500/50"
+                    @click="goToDepositCheck">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-8 h-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -54,5 +55,9 @@ const { current_balance, total_income, total_expense } = defineProps(['current_b
 
 const goToAddPurchase = () => {
     router.push({ name: 'addPurchase' })
+}
+
+const goToDepositCheck = () => {
+    router.push({ name: 'depositCheck' })
 }
 </script>

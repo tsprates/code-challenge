@@ -12,15 +12,21 @@
     <Loading v-if="!isLoaded" />
 
     <ListTransactions v-if="isLoaded" :transactions="currentIncomes" />
+
+    <AddButton @click="goToDepositCheck" />
 </template>
 
 <script setup>
 import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import http from '../services/http';
+import AddButton from './AddButton.vue';
 import Date from './Date.vue';
 import ListTransactions from './ListTransactions.vue';
 import Loading from './Loading.vue';
 import Toolbar from './Toolbar.vue';
+
+const router = useRouter()
 
 const isLoaded = ref(false)
 
@@ -43,5 +49,9 @@ onMounted(() => {
 watch(status, (newStatus) => {
     currentIncomes.value = transactions.value.filter((income) => (income.check.status === newStatus))
 })
+
+const goToDepositCheck = () => {
+    router.push({ name: 'depositCheck' })
+}
 
 </script>

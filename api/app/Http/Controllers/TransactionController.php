@@ -9,6 +9,7 @@ use App\Models\Check;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -69,20 +70,27 @@ class TransactionController extends Controller
             return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
         }
 
-        DB::transaction(function() use ($data, &$income) {
-            $income = Transaction::create([
-                'amount' => $data['amount'],
-                'description' => $data['description'],
-                'type' => TransactionType::Income->value,
-                'user_id' => auth()->user()->id,
-            ]);
+        return DB::transaction(function() use ($request, &$income) {
+            $income = $this->createTransaction($request->only(['amount', 'description']), TransactionType::Income->value);
+
+            $picture = $request->file('picture')->store('public');
 
             Check::create([
-                'picture' => $data['picture'],
+                'picture' => basename($picture),
                 'transaction_id' => $income->id,
             ]);
-        });
 
-        return response()->json($income, Response::HTTP_CREATED);
+            return response()->json($income, Response::HTTP_CREATED);
+        });
+    }
+
+    protected function createTransaction(array $data, string $type)
+    {
+        return Transaction::create([
+            'amount' => $data['amount'],
+            'description' => $data['description'],
+            'type' => $type,
+            'user_id' => auth()->id(),
+        ]);
     }
 }
