@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
+import AddPurchase from './components/AddPurchase.vue'
 import Balance from './components/Balance.vue'
 import Expenses from './components/Expenses.vue'
 import Incomes from './components/Incomes.vue'
@@ -14,6 +15,7 @@ const routes = [
     { path: '/balance', component: Balance, name: 'balance' },
     { path: '/incomes', component: Incomes, name: 'incomes' },
     { path: '/expenses', component: Expenses, name: 'expenses' },
+    { path: '/expenses/add', component: AddPurchase, name: 'addPurchase' },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]
 

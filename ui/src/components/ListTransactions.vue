@@ -1,7 +1,7 @@
 <template>
-    <div class="p-3 text-blue-500">
+    <div class="max-w-screen-md mx-auto p-3 text-blue-500">
         <slot></slot>
-        <ul>
+        <ul class="flex flex-col">
             <li v-for="transaction in transactions"
                 class="py-3 flex flex-row items-center justify-between border-b border-solid border-blue-200">
                 <span>
