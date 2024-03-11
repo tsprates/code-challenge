@@ -2,6 +2,7 @@
     <div class="max-w-screen-md mx-auto p-3 text-blue-500">
         <slot></slot>
         <ul class="flex flex-col">
+            <h4 v-if="transactions.length === 0" class="font-bold text-center mt-4 text-blue-200">Nothing found</h4>
             <li v-for="transaction in transactions"
                 class="py-3 flex flex-row items-center justify-between border-b border-solid border-blue-200">
                 <span>
