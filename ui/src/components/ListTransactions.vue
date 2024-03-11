@@ -9,7 +9,8 @@
                     <span class="text-xs">{{ transaction.created_at }}</span>
                 </span>
                 <div class="flex items-center justify-center">
-                    <span v-if="transaction.type === 'income'" class="text-xl font-semibold">${{ transaction.amount }}</span>
+                    <span v-if="transaction.type === 'income'" class="text-xl font-semibold">${{ transaction.amount
+                        }}</span>
                     <span v-else class="text-xl font-semibold text-red-500">-${{ transaction.amount }}</span>
                 </div>
             </li>
@@ -20,5 +21,5 @@
 <script setup>
 import { defineProps } from 'vue';
 
-const { transactions } = defineProps(['transactions']);
+const { transactions } = defineProps(['transactions'])
 </script>

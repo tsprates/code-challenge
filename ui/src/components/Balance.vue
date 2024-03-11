@@ -28,7 +28,7 @@ const currentBalance = ref('-')
 const transactions = ref([])
 
 onMounted(() => {
-    http.get('/transactions')
+    http().get('/transactions')
         .then((response) => {
             transactions.value = response.data.transactions
             totalIncome.value = (response.data.total_income).toFixed(2)

@@ -26,7 +26,7 @@ const isLoaded = ref(false)
 const transactions = ref([])
 
 onMounted(() => {
-    http.get('/expenses')
+    http().get('/expenses')
         .then((response) => {
             transactions.value = response.data
             console.log(transactions.value)

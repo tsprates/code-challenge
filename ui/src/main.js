@@ -10,7 +10,7 @@ import './style.css'
 
 const routes = [
     { path: '/login', component: Login, name: 'login' },
-    { path: '/', alias: ['/balance'] },
+    { path: '/', redirect: '/login' },
     { path: '/balance', component: Balance, name: 'balance' },
     { path: '/incomes', component: Incomes, name: 'incomes' },
     { path: '/expenses', component: Expenses, name: 'expenses' },

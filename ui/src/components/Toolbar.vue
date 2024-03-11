@@ -46,6 +46,17 @@
                 </span>
                 <span class="nav-label">Expenses</span>
             </router-link>
+
+            <div class="nav-item" @click="logout">
+                <span class="nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                    </svg>
+                </span>
+                <span class="nav-label">Logout</span>
+            </div>
         </div>
     </div>
 
@@ -56,6 +67,10 @@
 
 <script setup>
 import { computed, defineProps, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import http from '../services/http';
+
+const router = useRouter()
 
 const { title, classes } = defineProps({
     title: {
@@ -78,6 +93,15 @@ const showNav = () => {
 
 const hideNav = () => {
     isNavVisible.value = false;
+}
+
+const logout = () => {
+    http().post("/auth/logout")
+        .then(response => {
+            alert(response.data.message)
+            router.push({ name: 'login' })
+        })
+        .catch(error => console.log(error))
 }
 </script>
 

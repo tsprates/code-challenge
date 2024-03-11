@@ -34,7 +34,7 @@ const login = () => {
     password: password.value,
   }
 
-  http.post("/auth/login", payload)
+  http().post("/auth/login", payload)
     .then((response) => {
       const { access_token } = response.data
       console.log(access_token)
