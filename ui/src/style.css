@@ -14,11 +14,11 @@
   .nav {
     @apply absolute inset-0 max-h-full w-52 bg-blue-600 text-white -translate-x-52 z-10
   }
-  
+
   .nav-header {
     @apply py-8 px-4 bg-blue-300 text-center text-lg font-bold
   }
-  
+
   .nav-list {
     @apply flex flex-col py-4
   }
@@ -33,5 +33,17 @@
 
   .nav-icon {
     @apply text-blue-400
+  }
+
+  .list-status {
+    @apply bg-blue-100 text-blue-400 flex justify-around pt-2
+  }
+
+  .status {
+    @apply pt-3 pb-1 text-sm font-semibold uppercase border-solid border-b-2 border-blue-100 active:text-blue-400/50 active:border-blue-400/50
+  }
+  
+  .active-status {
+    @apply border-blue-400
   }
 }
