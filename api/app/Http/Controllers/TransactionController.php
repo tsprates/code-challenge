@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckStatus;
 use App\Enums\TransactionType;
 use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\StoreIncomeRequest;
@@ -39,6 +40,16 @@ class TransactionController extends Controller
         return $user->expenses->all();
     }
 
+    public function checkList()
+    {
+        return Check::listAllPending();
+    }
+
+    public function checkById(int $id)
+    {
+        return Check::pendingById($id);
+    }
+
     public function addPurchase(Request $request)
     {
         $data = $request->only(['amount', 'description']);
@@ -72,15 +83,23 @@ class TransactionController extends Controller
         return DB::transaction(function () use ($request, &$income) {
             $income = $this->createTransaction($request->only(['amount', 'description']), TransactionType::Income->value);
 
-            $picture = $request->file('picture')->store('public');
+            $picture = basename($request->file('picture')->store('public'));
 
             Check::create([
-                'picture' => basename($picture),
+                'picture' => asset("storage/{$picture}"),
                 'transaction_id' => $income->id,
             ]);
 
             return response()->json($income, Response::HTTP_CREATED);
         });
+    }
+
+    public function updateStatus(Request $request, Check $check)
+    {
+        $check->status = $request->input('status');
+        $check->save();
+
+        return $check;
     }
 
     protected function createTransaction(array $data, string $type)

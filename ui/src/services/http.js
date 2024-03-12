@@ -22,9 +22,9 @@ export default function () {
                 alert('Session expired!')
             }
 
-            if (error.response && error.response.status === 500) {
+            if (error.response && error.response.status >= 500) {
                 window.location.pathname = '/login'
-                alert('Bad gateway!')
+                alert('Server failure!')
             }
 
             return Promise.reject(error);

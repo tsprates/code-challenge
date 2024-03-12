@@ -39,4 +39,8 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('incomes', [TransactionController::class, 'incomes']);
     Route::post('incomes', [TransactionController::class, 'depositCheck']);
+
+    Route::get('checks/pending', [TransactionController::class, 'checkList']);
+    Route::get('checks/{id}', [TransactionController::class, 'checkById']);
+    Route::patch('checks/{check}/status', [TransactionController::class, 'updateStatus']);
 });

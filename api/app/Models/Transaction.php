@@ -22,10 +22,6 @@ class Transaction extends Model
         'amount', 'description', 'type', 'user_id'
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime:d/m/Y, h:i A',
-    ];
-
     public function user(): HasOne
     {
         return $this->hasOne(User::class);

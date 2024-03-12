@@ -46,6 +46,18 @@
   .active-status {
     @apply border-blue-400
   }
+
+  .button {
+    @apply rounded-sm text-xs uppercase text-center py-3 w-full bg-blue-500 active:bg-blue-500/50 text-white
+  }
+
+  .button-accept {
+    @apply rounded-sm text-xs uppercase text-center py-3 w-full bg-blue-500 active:bg-blue-500/50 text-white flex items-center justify-center gap-1
+  }
+
+  .button-reject {
+    @apply rounded-sm text-xs uppercase text-center py-3 w-full text-blue-500 bg-white active:bg-blue-500/50 border-solid border-2 border-blue-200 flex items-center justify-center gap-1
+  }
 }
 
 /* Chrome, Safari, Edge, Opera */
