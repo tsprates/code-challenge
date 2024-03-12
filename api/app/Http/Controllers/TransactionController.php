@@ -52,8 +52,7 @@ class TransactionController extends Controller
 
     public function currentBalance()
     {
-        return response()
-            ->json(["balance" => auth()->user()->currentBalance()]);
+        return response()->json(["balance" => auth()->user()->currentBalance()]);
     }
 
     public function addPurchase(Request $request)

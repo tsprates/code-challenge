@@ -23,7 +23,7 @@ class StoreIncomeRequest extends FormRequest
     {
         return [
             'amount' => ['required', 'numeric'],
-            'description' => ['required', 'min:5'],
+            'description' => ['required', 'min:3'],
             'picture' => ['required', 'image', 'mimes:jpeg,jpg,png,gif', 'dimensions:max_width=640,max_height=380'],
         ];
     }

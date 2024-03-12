@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidAmount;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreExpenseRequest extends FormRequest
@@ -21,9 +22,11 @@ class StoreExpenseRequest extends FormRequest
      */
     public function rules(): array
     {
+        $balance = auth()->user()->currentBalance();
+
         return [
-            'amount' => ['required', 'numeric'],
-            'description' => ['required', 'min:5'],
+            'amount' => ['required', 'numeric', new ValidAmount($balance)],
+            'description' => ['required', 'min:3'],
         ];
     }
 }

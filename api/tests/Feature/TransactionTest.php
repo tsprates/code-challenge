@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Contracts\Cache\Store;
@@ -51,7 +52,12 @@ class TransactionTest extends TestCase
 
     public function test_add_purchase()
     {
-        User::factory($this->fakeCredentials())->create();
+        $income = Transaction::factory(['amount' => 999.99])
+            ->has(Check::factory()->accepted())->income();
+
+        User::factory($this->fakeCredentials())
+            ->has($income)
+            ->create();
 
         $accessToken = $this->login()['access_token'];
 
@@ -66,7 +72,25 @@ class TransactionTest extends TestCase
             ->assertCreated();
     }
 
-    public function test_fails_adding_purchase_with_invalid_amount()
+    public function test_fails_adding_a_purchase_due_to_insufficient_balance()
+    {
+        User::factory($this->fakeCredentials())->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $payload = [
+            'amount' => 10.5,
+            'description' => 'Test expense',
+        ];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->post('/api/expenses', $payload)
+            ->assertBadRequest()
+            ->assertJsonValidationErrors(['amount']);
+    }
+
+    public function test_fails_adding_a_purchase_with_invalid_amount()
     {
         User::factory($this->fakeCredentials())->create();
 
@@ -84,7 +108,7 @@ class TransactionTest extends TestCase
             ->assertJsonValidationErrors(['amount']);
     }
 
-    public function test_fails_adding_purchase_with_missing_description()
+    public function test_fails_adding_a_purchase_with_missing_description()
     {
         User::factory($this->fakeCredentials())->create();
 
