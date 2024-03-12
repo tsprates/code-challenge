@@ -62,8 +62,7 @@
                 </label>
             </div>
             <label for="picture" v-if="picture.data !== null">
-                <img alt="Check" class="w-[92%] mx-auto h-32 object-fill" :src="picture.data"
-                    @load="checkImageDimensions" />
+                <img alt="Check" class="w-[90%] mx-auto h-32 object-fill" :src="picture.data" />
             </label>
             <input type="file" id="picture" name="picture" accept="image/*" class="hidden" @change="setPicture" />
             <!-- preview -->
@@ -118,21 +117,6 @@ const setPicture = (event) => {
     if (file) {
         picture.file = file
         picture.data = URL.createObjectURL(file)
-    }
-}
-
-const checkImageDimensions = (event) => {
-    const image = event.target
-
-    console.log(image)
-
-    const height = image.height;
-    const width = image.width;
-
-    if (height > 680 || width > 380) {
-        alert("Height and width must not exceed 680x380.")
-        picture.file = null
-        picture.data = null
     }
 }
 
