@@ -1,9 +1,6 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router';
 
 export default function () {
-    const router = useRouter();
-
     const token = localStorage.getItem("token");
 
     const instance = axios.create({
@@ -21,12 +18,12 @@ export default function () {
             // Handle token expiration or unauthorized access
             // Redirect user to login page
             if (error.response && error.response.status === 401) {
-                router.push({ name: 'login' })
+                window.location.pathname = '/login'
                 alert('Session expired!')
             }
 
             if (error.response && error.response.status === 500) {
-                router.push({ name: 'login' })
+                window.location.pathname = '/login'
                 alert('Bad gateway!')
             }
 

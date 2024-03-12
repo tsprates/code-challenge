@@ -44,7 +44,6 @@ const login = () => {
   http().post("/auth/login", payload)
     .then((response) => {
       const { access_token } = response.data
-      console.log(access_token)
       localStorage.setItem("token", access_token)
       router.push({ name: 'balance' })
     })
