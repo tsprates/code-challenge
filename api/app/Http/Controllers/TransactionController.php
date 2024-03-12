@@ -10,6 +10,7 @@ use App\Models\Check;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,16 +39,6 @@ class TransactionController extends Controller
         $user = auth()->user();
 
         return $user->expenses->all();
-    }
-
-    public function checkList()
-    {
-        return Check::listAllPending();
-    }
-
-    public function checkById(int $id)
-    {
-        return Check::pendingById($id);
     }
 
     public function currentBalance()
@@ -99,8 +90,30 @@ class TransactionController extends Controller
         });
     }
 
-    public function updateStatus(Request $request, Check $check)
+    public function checkList()
     {
+        if (!Gate::allows('is-admin')) {
+            abort(403);
+        }
+
+        return Check::listAllPending();
+    }
+
+    public function checkById(int $id)
+    {
+        if (!Gate::allows('is-admin')) {
+            abort(403);
+        }
+
+        return Check::pendingById($id);
+    }
+
+    public function updateCheckStatus(Request $request, Check $check)
+    {
+        if (!Gate::allows('is-admin')) {
+            abort(403);
+        }
+
         $check->status = $request->input('status');
         $check->save();
 

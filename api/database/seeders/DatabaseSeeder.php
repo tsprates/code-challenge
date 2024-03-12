@@ -43,8 +43,8 @@ class DatabaseSeeder extends Seeder
             ->has($factoryIncomeRejected)
             ->has($factoryExpenses)
             ->create([
-                'name' => 'test',
-                'email' => 'test@example.com',
+                'name' => 'admin',
+                'email' => 'admin@example.com',
                 'is_admin' => true
             ]);
         

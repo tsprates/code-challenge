@@ -43,5 +43,5 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('checks/pending', [TransactionController::class, 'checkList']);
     Route::get('checks/{id}', [TransactionController::class, 'checkById']);
-    Route::patch('checks/{check}/status', [TransactionController::class, 'updateStatus']);
+    Route::patch('checks/{check}/status', [TransactionController::class, 'updateCheckStatus']);
 });
