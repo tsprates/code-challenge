@@ -85,7 +85,12 @@ const addPurchase = () => {
             alert('Successful purchase!')
             router.go(-1)
         })
-        .catch(() => {
+        .catch((error) => {
+            const response = error.response.data
+            if (response.errors.amount[0].trim() === `The current balance is insufficient.`) {
+                alert(`The current balance is insufficient.`)
+                return
+            }
             alert(`Error when submitting the form!`)
         })
         .finally(() => (submitting.value = false))

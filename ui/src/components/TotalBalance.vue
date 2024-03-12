@@ -15,7 +15,7 @@
                     <h4 class="font-semibold text-sm">Income</h4>
                     <span class="text-2xl font-semibold">${{ total_income }}</span>
                 </span>
-                <div class="flex flex-col items-center justify-center w-1/3 active:text-blue-500/50"
+                <div class="flex flex-col items-center justify-center w-1/3 active:text-blue-500/50 hover:cursor-pointer"
                     @click="goToDepositCheck">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-8 h-8">
@@ -32,7 +32,7 @@
                     <h4 class="font-semibold text-sm">Expense</h4>
                     <span class="text-2xl font-semibold">${{ total_expense }}</span>
                 </span>
-                <div class="flex flex-col items-center justify-center w-1/3 active:text-blue-500/50"
+                <div class="flex flex-col items-center justify-center w-1/3 active:text-blue-500/50 hover:cursor-pointer"
                     @click="goToAddPurchase">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-8 h-8">

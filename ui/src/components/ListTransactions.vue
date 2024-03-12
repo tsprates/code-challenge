@@ -7,7 +7,7 @@
                 class="py-3 flex flex-row items-center justify-between border-b border-solid border-blue-200">
                 <span>
                     <h4 class="font-bold text-xs">{{ transaction.description }}</h4>
-                    <span class="text-xs">{{ transaction.created_at }}</span>
+                    <span class="text-xs">{{ moment(transaction.created_at).format("DD/MM/YYYY hh:mm A") }}</span>
                 </span>
                 <div class="flex items-center justify-center">
                     <span v-if="transaction.type === 'income'" class="text-xl font-semibold">${{ transaction.amount
@@ -20,6 +20,7 @@
 </template>
 
 <script setup>
+import moment from 'moment';
 import { defineProps } from 'vue';
 
 const { transactions } = defineProps(['transactions'])
