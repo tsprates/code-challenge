@@ -18,12 +18,12 @@ export default function () {
             // Handle token expiration or unauthorized access
             // Redirect user to login page
             if (error.response && error.response.status === 401) {
-                window.location.pathname = '/login'
+                window.location.hash = '#/login'
                 alert('Session expired!')
             }
 
             if (error.response && error.response.status >= 500) {
-                window.location.pathname = '/login'
+                window.location.hash = '#/login'
                 alert('Server failure!')
             }
 

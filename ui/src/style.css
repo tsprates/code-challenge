@@ -24,7 +24,7 @@
   }
 
   .nav-item {
-    @apply pl-4 py-4 hover:bg-blue-400/50 flex items-center justify-start gap-2
+    @apply pl-4 py-4 hover:bg-blue-400/50 flex items-center justify-start gap-2 hover:cursor-pointer
   }
 
   .nav-label {

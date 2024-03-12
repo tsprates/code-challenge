@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import App from './App.vue'
 import AddPurchase from './components/AddPurchase.vue'
 import Balance from './components/Balance.vue'
@@ -16,7 +16,7 @@ import './style.css'
 const routes = [
     { path: '/login', component: Login, name: 'login' },
     { path: '/signup', component: SignUp, name: 'signUp' },
-    { path: '/', redirect: '/balance' },
+    { path: '/', redirect: '/balance', name: 'index' },
     { path: '/balance', component: Balance, name: 'balance' },
     { path: '/incomes', component: Incomes, name: 'incomes' },
     { path: '/expenses', component: Expenses, name: 'expenses' },
@@ -28,7 +28,7 @@ const routes = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHashHistory(),
     routes,
 })
 
