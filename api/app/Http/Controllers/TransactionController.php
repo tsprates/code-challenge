@@ -50,6 +50,12 @@ class TransactionController extends Controller
         return Check::pendingById($id);
     }
 
+    public function currentBalance()
+    {
+        return response()
+            ->json(["balance" => auth()->user()->currentBalance()]);
+    }
+
     public function addPurchase(Request $request)
     {
         $data = $request->only(['amount', 'description']);

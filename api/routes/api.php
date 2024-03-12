@@ -33,6 +33,7 @@ Route::group([
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('transactions', [TransactionController::class, 'index']);
+    Route::get('balance', [TransactionController::class, 'currentBalance']);
 
     Route::get('expenses', [TransactionController::class, 'expenses']);
     Route::post('expenses', [TransactionController::class, 'addPurchase']);

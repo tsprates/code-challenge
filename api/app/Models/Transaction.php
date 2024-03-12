@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\CheckStatus;
-use App\Enums\TransactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -31,10 +30,11 @@ class Transaction extends Model
     {
         return $this->hasOne(Check::class);
     }
-    
+
     public function acceptedCheck(): HasOne
     {
-        return $this->hasOne(Check::class)
+        return $this
+            ->hasOne(Check::class)
             ->where('type', CheckStatus::Accepted->value);
     }
 }

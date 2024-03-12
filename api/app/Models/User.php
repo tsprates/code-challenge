@@ -90,6 +90,11 @@ class User extends Authenticatable implements JWTSubject
             ->where('type', TransactionType::Expense->value);
     }
 
+    public function currentBalance()
+    {
+        return $this->currentAmountIncomes() - $this->currentAmountExpenses();
+    }
+
     public function currentAmountIncomes()
     {
         return $this->incomes()
