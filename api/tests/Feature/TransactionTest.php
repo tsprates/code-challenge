@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -89,7 +90,7 @@ class TransactionTest extends TestCase
 
         $accessToken = $this->login()['access_token'];
 
-        
+
         $payload = [
             'amount' => '10.5',
             // no description
@@ -104,9 +105,9 @@ class TransactionTest extends TestCase
 
     public function test_deposit_check()
     {
-        Storage::fake();
+        Storage::fake('public');
 
-        User::factory($this->fakeCredentials())->create();
+        $user = User::factory($this->fakeCredentials())->create();
 
         $accessToken = $this->login()['access_token'];
 
@@ -120,12 +121,14 @@ class TransactionTest extends TestCase
             ->withHeaders(['Authorization' => "bearer {$accessToken}"])
             ->post('/api/incomes', $payload)
             ->assertCreated();
+
+        $user->fresh();
+
+        Storage::disk('public')->assertExists(basename($user->picture));
     }
-    
+
     public function test_fails_deposit_check_with_missing_picture()
     {
-        Storage::fake();
-
         User::factory($this->fakeCredentials())->create();
 
         $accessToken = $this->login()['access_token'];
@@ -140,11 +143,9 @@ class TransactionTest extends TestCase
             ->post('/api/incomes', $payload)
             ->assertJsonValidationErrors(['picture']);
     }
-    
+
     public function test_fails_deposit_check_with_invalid_size_picture()
     {
-        Storage::fake();
-
         User::factory($this->fakeCredentials())->create();
 
         $accessToken = $this->login()['access_token'];
