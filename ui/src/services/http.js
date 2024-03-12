@@ -19,7 +19,13 @@ export default function () {
             // Redirect user to login page
             if (error.response && error.response.status === 401) {
                 window.location.hash = '#/login'
-                alert('Session expired!')
+                alert('Invalid credentials!')
+            }
+
+            // Redirect user to index page
+            if (error.response && error.response.status === 403) {
+                window.location.hash = '#/'
+                alert('Unauthorized!')
             }
 
             if (error.response && error.response.status >= 500) {

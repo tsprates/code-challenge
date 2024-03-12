@@ -48,7 +48,6 @@ const login = () => {
       router.push({ name: 'balance' })
     })
     .catch((error) => {
-      alert('Invalid credentials!')
       console.log(error)
     })
 }

@@ -124,6 +124,8 @@ const setPicture = (event) => {
 const checkImageDimensions = (event) => {
     const image = event.target
 
+    console.log(image)
+
     const height = image.height;
     const width = image.width;
 
