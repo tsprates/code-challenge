@@ -9,7 +9,6 @@ use App\Models\Check;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -45,6 +44,7 @@ class TransactionController extends Controller
         $data = $request->only(['amount', 'description']);
 
         $validator = Validator::make($data, (new StoreExpenseRequest())->rules());
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
         }
@@ -58,17 +58,18 @@ class TransactionController extends Controller
 
         return response()->json($expense, Response::HTTP_CREATED);
     }
-    
+
     public function depositCheck(Request $request)
     {
         $data = $request->only(['amount', 'description', 'picture']);
 
         $validator = Validator::make($data, (new StoreIncomeRequest())->rules());
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], Response::HTTP_BAD_REQUEST);
         }
 
-        return DB::transaction(function() use ($request, &$income) {
+        return DB::transaction(function () use ($request, &$income) {
             $income = $this->createTransaction($request->only(['amount', 'description']), TransactionType::Income->value);
 
             $picture = $request->file('picture')->store('public');

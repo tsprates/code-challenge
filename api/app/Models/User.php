@@ -104,12 +104,14 @@ class User extends Authenticatable implements JWTSubject
 
     public function validTransactions()
     {
-        $acceptedIncomeIds = Transaction::whereHas('check', function ($query) {
-            $query->where('status', CheckStatus::Accepted->value);
-        })->where('type', TransactionType::Income->value)->select('id');
+        $acceptedIncomeIds = Transaction::whereHas('check', fn ($query) => $query->where('status', CheckStatus::Accepted->value))
+            ->where('type', TransactionType::Income->value)
+            ->where('user_id', $this->id)
+            ->select('id');
 
-        return Transaction::where('type', TransactionType::Expense->value)
-            ->orWhereIn('id', $acceptedIncomeIds)
+        return Transaction::where('user_id', $this->id)
+            ->where(fn ($query) => $query->where('type', TransactionType::Expense->value)
+                ->orWhereIn('id', $acceptedIncomeIds))
             ->orderBy('created_at')
             ->get();
     }

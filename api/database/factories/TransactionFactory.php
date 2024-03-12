@@ -18,7 +18,7 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'description' => fake()->name(),
+            'description' => fake()->word(2),
             'amount' => fake()->randomFloat(3, 0, 100),
             'type' => TransactionType::Expense->value,
         ];

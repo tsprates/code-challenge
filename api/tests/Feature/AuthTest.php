@@ -34,6 +34,25 @@ class AuthTest extends TestCase
             ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
     }
 
+    public function test_register_a_user(): void
+    {
+        $data = ['name' => 'Test Name'];
+
+        $this
+            ->post('/api/auth/register', $this->fakeCredentials($data))
+            ->assertCreated();
+
+        $this->assertDatabaseHas('users', $data);
+    }
+
+    public function test_fails_when_registering_a_user_with_missing_name(): void
+    {
+        $this
+            ->post('/api/auth/register', $this->fakeCredentials())
+            ->assertBadRequest()
+            ->assertJsonValidationErrors(['name']);
+    }
+
     public function test_non_existent_user_cannot_login(): void
     {
         User::factory($this->fakeCredentials())->create();

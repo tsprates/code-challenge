@@ -45,6 +45,14 @@ class DatabaseSeeder extends Seeder
             ->create([
                 'name' => 'test',
                 'email' => 'test@example.com',
+                'is_admin' => true
+            ]);
+        
+        User::factory()
+            ->has($factoryIncomePending)
+            ->create([
+                'name' => 'guest',
+                'email' => 'guest@example.com',
             ]);
     }
 }

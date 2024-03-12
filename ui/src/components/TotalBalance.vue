@@ -3,7 +3,8 @@
         <div class="bg-blue-300 text-white pt-8 pb-4 px-5 flex flex-row items-end justify-between">
             <div class="flex flex-col items-center justify-between">
                 <h2 class="font-semibold text-sm">Current Balance</h2>
-                <span class="text-4xl font-semibold">${{ current_balance }}</span>
+                <span v-if="current_balance >= 0" class="text-4xl font-semibold">${{ current_balance }}</span>
+                <span v-else class="text-4xl font-semibold text-red-400">-${{ Math.abs(current_balance) }}</span>
             </div>
             <div class="font-semibold text-lg w-1/3 md:text-center">{{ moment().format('MMMM, YYYY') }}</div>
         </div>

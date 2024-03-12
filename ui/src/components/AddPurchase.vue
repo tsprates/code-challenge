@@ -11,11 +11,12 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
                         </svg> Amount</label>
-                    <div class="grid grid-cols-4 gap-2 items-end">
-                        <input type="number" name="amount" placeholder="0.00" required autocomplete="off" v-model="amount"
-                            class="col-span-3 text-xl text-blue-400 placeholder:text-blue-300 font-semibold py-2 border-b-2 border-solid border-blue-200 focus:outline-none focus:border-blue-300" />
-                        <span class="font-bold text-xl text-blue-400 text-center">USD</span>
-                    </div>
+                <div class="grid grid-cols-4 gap-2 items-end">
+                    <input type="number" name="amount" placeholder="0.00" required step="0.01" autocomplete="off"
+                        v-model="amount"
+                        class="col-span-3 text-xl text-blue-400 placeholder:text-blue-300 font-semibold py-2 border-b-2 border-solid border-blue-200 focus:outline-none focus:border-blue-300" />
+                    <span class="font-bold text-xl text-blue-400 text-center">USD</span>
+                </div>
                 </p>
                 <p class="flex flex-col p-4">
                     <span
