@@ -50,7 +50,7 @@
             </div>
 
             <!-- preview picture -->
-            <div class="input-file" v-if="!pictureData">
+            <div class="input-file" v-if="!picture">
                 <label for="picture">
                     <span class="flex flex-col items-center justify-center text-blue-300 active:text-blue-200">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -62,11 +62,11 @@
                     </span>
                 </label>
             </div>
-            <label for="picture" v-if="pictureData">
-                <img alt="Check" class="w-[90%] mx-auto h-32 object-fill" :src="pictureData" />
+            <label for="picture" v-if="picture">
+                <img alt="Check" class="w-[90%] mx-auto h-32 object-fill" :src="picture" />
             </label>
             <input type="file" id="picture" name="picture" accept="image/*" class="hidden" @change="setPicture" />
-            <div v-if="errors.pictureData" class="label-error">{{ errors.pictureData }}</div>
+            <div v-if="errors.picture" class="label-error text-center">{{ errors.picture }}</div>
             <!-- preview picture -->
 
             <div class="fixed bottom-2 left-0 md:relative md:bottom-1 md:mt-5 p-2 w-full">
@@ -93,14 +93,14 @@ const { errors, handleSubmit, defineField } = useForm({
     validationSchema: yup.object({
         amount: yup.number().typeError('amount must be a numeric value').required(),
         description: yup.string().min(3).required(),
-        pictureData: yup.mixed().required(),
+        picture: yup.mixed().required(),
         pictureFile: yup.mixed().required(),
     }),
 })
 
 const [amount, amountAttrs] = defineField('amount');
 const [description, descriptionAttrs] = defineField('description');
-const [pictureData] = defineField('pictureData');
+const [picture] = defineField('picture');
 const [pictureFile] = defineField('pictureFile');
 
 const submitting = ref(false)
@@ -129,7 +129,7 @@ const setPicture = (event) => {
     const file = event.target.files[0]
     if (file) {
         pictureFile.value = file
-        pictureData.value = URL.createObjectURL(file)
+        picture.value = URL.createObjectURL(file)
     }
 }
 

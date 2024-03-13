@@ -64,7 +64,7 @@
   }
 
   .input {
-    @apply text-lg text-blue-400 font-semibold mt-1 border-b-2 border-solid border-blue-200 focus:outline-none focus:border-blue-300 placeholder:text-blue-200
+    @apply text-lg text-blue-400 font-semibold mt-1 border-b-2 border-solid border-blue-200 focus:outline-none focus:text-blue-400 focus:border-blue-300 placeholder:text-blue-200
   }
 
   .input-file {
@@ -72,7 +72,7 @@
   }
 
   .input-error {
-    @apply text-red-500 border-red-500 hover:border-red-500 placeholder:border-red-200
+    @apply text-red-500 border-red-500 hover:border-red-500 focus:border-red-300 focus:text-red-400 placeholder:border-red-200 placeholder:text-red-200
   }
 
   .label-error {

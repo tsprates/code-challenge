@@ -22,8 +22,8 @@ const routes = [
     { path: '/expenses', component: Expenses, name: 'expenses' },
     { path: '/checks', component: CheckList, name: 'checkList' },
     { path: '/checks/:id', component: CheckDetails, name: 'checkDetails' },
-    { path: '/expenses/add', component: AddPurchase, name: 'addPurchase' },
-    { path: '/incomes/add', component: DepositCheck, name: 'depositCheck' },
+    { path: '/purchase/add', component: AddPurchase, name: 'addPurchase' },
+    { path: '/deposit-check', component: DepositCheck, name: 'depositCheck' },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ]
 
