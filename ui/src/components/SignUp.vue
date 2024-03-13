@@ -5,48 +5,69 @@
         </div>
 
         <form class="flex flex-col gap-3 space-y-1 pt-8" @submit.prevent="login">
-            <p class="flex flex-row items-center justify-center">
-                <input type="text" placeholder="name" v-model="name"
-                    class="rounded-3xl w-[80%] p-3 mt-2 border-2 border-solid border-blue-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 focus:outline-none placeholder:text-blue-200" />
-            </p>
-            <p class="flex flex-row items-center justify-center">
-                <input type="text" placeholder="email" v-model="email"
-                    class="rounded-3xl w-[80%] p-3 mt-2 border-2 border-solid border-blue-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 focus:outline-none placeholder:text-blue-200" />
-            </p>
-            <p class="flex items-center justify-center">
-                <input type="password" placeholder="password" v-model="password"
-                    class="rounded-3xl w-[80%] p-3 mt-2 border-2 border-solid border-blue-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 focus:outline-none placeholder:text-blue-200" />
-            </p>
-            <p class="flex items-center justify-center">
-                <button type="submit" placeholder="password"
-                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400">Login</button>
-            </p>
-        </form>
+            <div class="flex flex-col items-center justify-center">
+                <input type="text" placeholder="username" v-model="name"
+                    :class="{ 'login-input': true, 'input-error': errors.name }" v-bind="nameAttrs" />
+                <div v-if="errors.name" class="label-error">{{ errors.name }}</div>
+            </div>
 
-        <div class="text-center mt-4">
-            <button type="button" class="text-sm text-blue-300 w-[50%]" @click="goToLogin">Already have an
-                account?</button>
-        </div>
+            <div class="flex flex-col items-center justify-center">
+                <input type="text" placeholder="email" v-model="email"
+                    :class="{ 'login-input': true, 'input-error': errors.email }" v-bind="emailAttrs" />
+                <div v-if="errors.email" class="label-error">{{ errors.email }}</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center">
+                <input type="password" placeholder="password" v-model="password"
+                    :class="{ 'login-input': true, 'input-error': errors.password }" v-bind="passwordAttrs" />
+                <div v-if="errors.password" class="label-error">{{ errors.password }}</div>
+            </div>
+
+            <p class="flex items-center justify-center">
+                <button type="submit" placeholder="password" :disable="submitting"
+                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400">Sign
+                    Up</button>
+            </p>
+
+            <div class="text-center mt-4">
+                <button type="button" class="text-sm text-blue-300 w-[50%]" @click="goToLogin">Already have an
+                    account?</button>
+            </div>
+        </form>
     </div>
 </template>
 
 <script setup>
+import { useForm } from 'vee-validate';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import * as yup from 'yup';
 import http from '../services/http';
 
 const router = useRouter()
 
-const name = ref(null)
-const email = ref(null)
-const password = ref(null)
+const { errors, handleSubmit, defineField } = useForm({
+    validationSchema: yup.object({
+        name: yup.string().min(5).required(),
+        email: yup.string().email().required(),
+        password: yup.string().min(5).required(),
+    }),
+})
 
-const login = () => {
+const [name, nameAttrs] = defineField('name');
+const [email, emailAttrs] = defineField('email');
+const [password, passwordAttrs] = defineField('password');
+
+const submitting = ref(false)
+
+const login = handleSubmit((values) => {
     const payload = {
-        name: name.value,
-        email: email.value,
-        password: password.value,
+        name: values.name,
+        email: values.email,
+        password: values.password,
     }
+
+    submitting.value = true
 
     http().post("/auth/register", payload)
         .then(() => {
@@ -54,10 +75,10 @@ const login = () => {
             router.push({ name: 'login' })
         })
         .catch((error) => {
-            alert('Invalid crendetials!')
             console.log(error)
         })
-}
+        .finally(() => (submitting.value = false))
+})
 
 const goToLogin = () => {
     router.push({ name: 'login' })
