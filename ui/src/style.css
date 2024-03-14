@@ -8,11 +8,11 @@
   }
 
   .mask {
-    @apply absolute inset-0 max-w-full max-h-full bg-black/30
+    @apply absolute inset-0 max-w-full max-h-full bg-black/30 z-10
   }
 
   .nav {
-    @apply absolute inset-0 max-h-full w-52 bg-blue-600 text-white -translate-x-52 z-10
+    @apply absolute inset-0 max-h-full w-52 bg-blue-600 text-white -translate-x-52 z-50
   }
 
   .nav-header {

@@ -1,7 +1,7 @@
 <template>
     <div class="max-w-screen-md mx-auto">
         <div class="bg-blue-300 text-white pt-8 pb-4 px-5 flex flex-row items-end justify-between">
-            <div class="flex flex-col items-center justify-between">
+            <div class="flex flex-col items-start justify-between">
                 <h2 class="font-semibold text-sm">Current Balance</h2>
                 <span v-if="current_balance >= 0" class="text-4xl font-semibold">${{ currentBalance }}</span>
                 <span v-else class="text-4xl font-semibold text-red-400">-${{ currentBalance }}</span>

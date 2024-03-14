@@ -52,7 +52,8 @@
             <img alt="Check" :src="check.picture" class="w-[90%] h-36 mx-auto" v-if="check.picture" />
         </div>
 
-        <div class="fixed bottom-2 grid grid-cols-2 gap-2 left-0 md:relative md:bottom-1 md:mt-5 p-2 w-full">
+        <div class="fixed bottom-2 grid grid-cols-2 gap-2 left-0 md:relative md:bottom-1 md:mt-5 p-2 w-full"
+            v-if="isLoaded">
             <button type="button" :class="{ 'button-reject': true, 'bg-blue-100': submittingReject }"
                 @click="rejectCheck"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                     class="w-4 h-4">
@@ -115,9 +116,7 @@ const acceptCheck = () => {
     submittingAccept.value = true
 
     http().patch(`/checks/${id}/status`, { 'status': 'accepted' })
-        .then(() => {
-            alert(`Check accepted!`)
-        })
+        .then(() => alert(`Check accepted!`))
         .catch((error) => (console.log(error)))
         .finally(() => {
             submittingAccept.value = false
@@ -129,9 +128,7 @@ const rejectCheck = () => {
     submittingReject.value = true
 
     http().patch(`/checks/${id}/status`, { 'status': 'rejected' })
-        .then(() => {
-            alert(`Check rejected!`)
-        })
+        .then(() => alert(`Check rejected!`))
         .catch((error) => (console.log(error)))
         .finally(() => {
             submittingReject.value = false
