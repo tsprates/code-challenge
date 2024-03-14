@@ -68,6 +68,8 @@ const register = handleSubmit(async (values) => {
         alert('User successfully registered!')
         router.push({ name: 'login' })
     } catch (error) {
+        const { response } = error
+        alert(response.data.errors.email[0])
         console.error('Registration failed:', error)
     } finally {
         submitting.value = false
