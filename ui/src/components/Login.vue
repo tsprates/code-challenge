@@ -19,7 +19,7 @@
 
       <p class="flex items-center justify-center">
         <button type="submit" placeholder="password" :disable="submitting"
-          class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400">Login</button>
+          class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-50 disabled:bg-blue-200 disabled:cursor-none">Login</button>
       </p>
 
       <div class="text-center mt-4">
@@ -40,8 +40,8 @@ const router = useRouter()
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: yup.object({
-    email: yup.string().email().required(),
-    password: yup.string().min(5).required(),
+    email: yup.string().email('Invalid email').required('Email is required'),
+    password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is required'),
   }),
 })
 
@@ -50,25 +50,20 @@ const [password, passwordAttrs] = defineField('password');
 
 const submitting = ref(false)
 
-const login = handleSubmit((values) => {
-  const payload = {
-    email: values.email,
-    password: values.password,
-  }
-
+const login = handleSubmit(async (values) => {
   submitting.value = true
 
-  http().post("/auth/login", payload)
-    .then((response) => {
-      const { access_token } = response.data
-      localStorage.setItem("token", access_token)
-      router.push({ name: 'balance' })
-    })
-    .catch((error) => (console.log(error)))
-    .finally(() => (submitting.value = false))
+  try {
+    const response = await http().post("/auth/login", values)
+    const { access_token } = response.data
+    localStorage.setItem("token", access_token)
+    router.push({ name: 'balance' })
+  } catch (error) {
+    console.error('Login failed:', error)
+  } finally {
+    submitting.value = false
+  }
 })
 
-const goToSignUp = () => {
-  router.push({ name: 'signUp' })
-}
+const goToSignUp = () => router.push({ name: 'signUp' })
 </script>

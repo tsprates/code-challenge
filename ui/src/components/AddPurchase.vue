@@ -71,8 +71,8 @@ const router = useRouter()
 
 const { errors, handleSubmit, defineField } = useForm({
     validationSchema: yup.object({
-        amount: yup.number().typeError('amount must be a numeric value').required(),
-        description: yup.string().min(3).required(),
+        amount: yup.number().typeError('Amount must be a numeric value').required('Amount is required'),
+        description: yup.string().min(3, 'Description must be at least 3 characters').required('Description is required'),
     }),
 })
 
@@ -104,5 +104,4 @@ const addPurchase = handleSubmit((values) => {
         })
         .finally(() => (submitting.value = false))
 })
-
 </script>

@@ -91,10 +91,10 @@ const router = useRouter()
 
 const { errors, handleSubmit, defineField } = useForm({
     validationSchema: yup.object({
-        amount: yup.number().typeError('amount must be a numeric value').required(),
-        description: yup.string().min(3).required(),
-        picture: yup.mixed().required(),
-        pictureFile: yup.mixed().required(),
+        amount: yup.number().typeError('Amount must be a numeric value').required('Amount is required'),
+        description: yup.string().min(3, 'Description must be at least 3 characters').required('Description is required'),
+        picture: yup.mixed().required('Picture is required'),
+        pictureFile: yup.mixed().required('Picture file is required'),
     }),
 })
 
@@ -119,8 +119,8 @@ const depositCheck = handleSubmit((values) => {
             router.go(-1)
         })
         .catch((error) => {
-            alert(`Error when submitting the form!`)
-            console.log(error)
+            alert('Error: Unable to submit the form. Please try again later.')
+            console.error(error)
         })
         .finally(() => (submitting.value = false))
 })
@@ -132,5 +132,4 @@ const setPicture = (event) => {
         picture.value = URL.createObjectURL(file)
     }
 }
-
 </script>

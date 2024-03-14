@@ -4,7 +4,7 @@
             <h1 class="p-3">BNB Bank</h1>
         </div>
 
-        <form class="flex flex-col gap-3 space-y-1 pt-8" @submit.prevent="login">
+        <form class="flex flex-col gap-3 space-y-1 pt-8" @submit.prevent="register">
             <div class="flex flex-col items-center justify-center">
                 <input type="text" placeholder="username" v-model="name"
                     :class="{ 'login-input': true, 'input-error': errors.name }" v-bind="nameAttrs" />
@@ -25,7 +25,7 @@
 
             <p class="flex items-center justify-center">
                 <button type="submit" placeholder="password" :disable="submitting"
-                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400">Sign
+                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-50 disabled:bg-blue-200 disabled:cursor-none">Sign
                     Up</button>
             </p>
 
@@ -48,9 +48,9 @@ const router = useRouter()
 
 const { errors, handleSubmit, defineField } = useForm({
     validationSchema: yup.object({
-        name: yup.string().min(5).required(),
-        email: yup.string().email().required(),
-        password: yup.string().min(5).required(),
+        name: yup.string().min(5, 'Name must be at least 5 characters').required('Name is required'),
+        email: yup.string().email('Invalid email').required('Email is required'),
+        password: yup.string().min(5, 'Password must be at least 5 characters').required('Password is required'),
     }),
 })
 
@@ -60,27 +60,19 @@ const [password, passwordAttrs] = defineField('password');
 
 const submitting = ref(false)
 
-const login = handleSubmit((values) => {
-    const payload = {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-    }
-
+const register = handleSubmit(async (values) => {
     submitting.value = true
 
-    http().post("/auth/register", payload)
-        .then(() => {
-            alert('User succesfully registered!')
-            router.push({ name: 'login' })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-        .finally(() => (submitting.value = false))
+    try {
+        await http().post("/auth/register", values)
+        alert('User successfully registered!')
+        router.push({ name: 'login' })
+    } catch (error) {
+        console.error('Registration failed:', error)
+    } finally {
+        submitting.value = false
+    }
 })
 
-const goToLogin = () => {
-    router.push({ name: 'login' })
-}
+const goToLogin = () => router.push({ name: 'login' })
 </script>
