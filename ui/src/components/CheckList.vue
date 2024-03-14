@@ -36,11 +36,12 @@ const checks = ref([])
 onMounted(() => {
     http().get('/checks/pending')
         .then((response) => (checks.value = response.data))
-        .catch((error) => (console.log(error)))
+        .catch((error) => {
+            alert('Unauthorized')
+            console.log(error)
+        })
         .finally(() => (isLoaded.value = true))
 })
 
-const goToCheckDetails = (id) => {
-    router.push({ name: 'checkDetails', params: { id } })
-}
+const goToCheckDetails = (id) => router.push({ name: 'checkDetails', params: { id } })
 </script>

@@ -110,6 +110,7 @@ const logout = () => {
     http().post("/auth/logout")
         .then(response => {
             alert(response.data.message)
+            localStorage.removeItem('token')
             router.push({ name: 'login' })
         })
         .catch(error => console.log(error))

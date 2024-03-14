@@ -16,7 +16,7 @@ import './style.css'
 const routes = [
     { path: '/login', component: Login, name: 'login' },
     { path: '/signup', component: SignUp, name: 'signUp' },
-    { path: '/', redirect: '/balance', name: 'index' },
+    { path: '/', redirect: '/login', name: 'index' },
     { path: '/balance', component: Balance, name: 'balance' },
     { path: '/incomes', component: Incomes, name: 'incomes' },
     { path: '/expenses', component: Expenses, name: 'expenses' },

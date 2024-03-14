@@ -18,8 +18,8 @@
       </div>
 
       <p class="flex items-center justify-center">
-        <button type="submit" placeholder="password" :disable="submitting"
-          class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-50 disabled:bg-blue-200 disabled:cursor-none">Login</button>
+        <button type="submit" placeholder="password" :disabled="submitting"
+          class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-20 disabled:cursor-none">Login</button>
       </p>
 
       <div class="text-center mt-4">
@@ -31,7 +31,7 @@
 
 <script setup>
 import { useForm } from 'vee-validate';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import * as yup from 'yup';
 import http from '../services/http';
@@ -59,9 +59,25 @@ const login = handleSubmit(async (values) => {
     localStorage.setItem("token", access_token)
     router.push({ name: 'balance' })
   } catch (error) {
+    alert('Invalid credentials!')
     console.error('Login failed:', error)
   } finally {
     submitting.value = false
+  }
+})
+
+onMounted(async () => {
+  const token = localStorage.getItem('token')
+
+  if (token) {
+    try {
+      await http().post('/auth/me')
+      console.log('Connected')
+      router.push({ name: 'balance' })
+    } catch (error) {
+      alert('Unauthorized!')
+      console.error('Error:', error)
+    }
   }
 })
 

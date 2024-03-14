@@ -24,8 +24,8 @@
             </div>
 
             <p class="flex items-center justify-center">
-                <button type="submit" placeholder="password" :disable="submitting"
-                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-50 disabled:bg-blue-200 disabled:cursor-none">Sign
+                <button type="submit" placeholder="password" :disabled="submitting"
+                    class="rounded-md w-[90%] p-3 mt-2 bg-blue-500 text-white uppercase active:bg-blue-400 disabled:opacity-20 disabled:cursor-none">Sign
                     Up</button>
             </p>
 

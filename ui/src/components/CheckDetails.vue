@@ -108,7 +108,10 @@ onMounted(() => {
             check.date = response.data.created_at
             check.picture = response.data.picture
         })
-        .catch((error) => (console.log(error)))
+        .catch((error) => {
+            alert('Unauthorized')
+            console.log(error)
+        })
         .finally(() => (isLoaded.value = true))
 })
 
