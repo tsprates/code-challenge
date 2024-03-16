@@ -1,0 +1,49 @@
+name: Laravel Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: "api"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: pdo_sqlite, sqlite3
+
+      - name: Copy .env.example to .env
+        run: cp api/.env.example api/.env
+        working-directory: api
+
+      - name: Install dependencies
+        run: composer install --working-dir=api/ --no-ansi --no-interaction --no-progress --no-scripts --optimize-autoloader
+        working-directory: api
+
+      - name: Generate key
+        run: php api/artisan key:generate
+        working-directory: api
+
+      - name: Generate JWT
+        run: php api/artisan jwt:secret
+        working-directory: api
+
+      - name: Run migrations and seed database
+        run: php api/artisan migrate --seed --force
+        working-directory: api
+
+      - name: Run tests
+        run: ./api/vendor/bin/phpunit -c api/phpunit.xml api/tests
+        working-directory: api
