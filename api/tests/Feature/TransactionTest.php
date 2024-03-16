@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\CheckStatus;
 use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\User;
@@ -15,7 +16,7 @@ class TransactionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_list_all_transactions(): void
+    public function test_user_can_list_all_transactions(): void
     {
         User::factory($this->fakeCredentials())
             ->has(Transaction::factory()->count(3))
@@ -30,7 +31,7 @@ class TransactionTest extends TestCase
     }
 
     /** @dataProvider transactionProvider */
-    public function test_transactions($url): void
+    public function test_user_can_list_transactions($url): void
     {
         User::factory($this->fakeCredentials())
             ->has(Transaction::factory()->count(3))
@@ -53,7 +54,8 @@ class TransactionTest extends TestCase
     public function test_add_purchase()
     {
         $income = Transaction::factory(['amount' => 999.99])
-            ->has(Check::factory()->accepted())->income();
+            ->has(Check::factory()->accepted())
+            ->income();
 
         User::factory($this->fakeCredentials())
             ->has($income)
@@ -113,7 +115,6 @@ class TransactionTest extends TestCase
         User::factory($this->fakeCredentials())->create();
 
         $accessToken = $this->login()['access_token'];
-
 
         $payload = [
             'amount' => '10.5',
@@ -184,5 +185,42 @@ class TransactionTest extends TestCase
             ->withHeaders(['Authorization' => "bearer {$accessToken}"])
             ->post('/api/incomes', $payload)
             ->assertJsonValidationErrors(['picture']);
+    }
+
+    public function test_fails_when_user_when_tries_to_change_check_status()
+    {
+        $income = Transaction::factory(['amount' => 999.99])
+            ->has(Check::factory()->pending())
+            ->income();
+
+        User::factory($this->fakeCredentials())
+            ->has($income)
+            ->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->patch('/api/checks/1/status', ['status' => CheckStatus::Accepted->value])
+            ->assertForbidden();
+    }
+
+    public function test_admin_can_change_check_status_to_accepted()
+    {
+        $income = Transaction::factory(['amount' => 999.99])
+            ->has(Check::factory()->pending())
+            ->income();
+
+        User::factory($this->fakeCredentials())
+            ->admin()
+            ->has($income)
+            ->create();
+
+        $accessToken = $this->login()['access_token'];
+
+        $this
+            ->withHeaders(['Authorization' => "bearer {$accessToken}"])
+            ->patch('/api/checks/1/status', ['status' => CheckStatus::Accepted->value])
+            ->assertSuccessful();
     }
 }

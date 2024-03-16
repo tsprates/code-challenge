@@ -53,6 +53,25 @@ class AuthTest extends TestCase
             ->assertJsonValidationErrors(['name']);
     }
 
+    public function test_fails_when_registering_a_user_with_existant_email(): void
+    {
+        User::factory($this->fakeCredentials([
+            'name' => 'Test user',
+            'email' => 'test@example.com',
+        ]))->create();
+
+        $payload = [
+            'name' => 'Test user 2',
+            'email' => 'test@example.com',
+            'password' => 'secret',
+        ];
+
+        $this
+            ->post('/api/auth/register', $payload)
+            ->assertBadRequest()
+            ->assertJsonValidationErrors(['email']);
+    }
+
     public function test_non_existent_user_cannot_login(): void
     {
         User::factory($this->fakeCredentials())->create();
