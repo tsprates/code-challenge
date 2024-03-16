@@ -1,5 +1,7 @@
 # Code Challenge
 
+![Workflow Status](https://github.com/tsprates/code-challenge/actions/workflows/laravel_tests.yml/badge.svg)
+
 ### Credentials
 
 #### Admin 
