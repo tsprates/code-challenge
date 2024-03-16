@@ -40,10 +40,10 @@ jobs:
         run: php api/artisan jwt:secret
         working-directory: api
 
-      - name: Run migrations and seed database
-        run: php api/artisan migrate --seed --force
+      - name: Run migrations
+        run: php api/artisan migrate --force
         working-directory: api
 
       - name: Run tests
-        run: ./api/vendor/bin/phpunit -c api/phpunit.xml api/tests
+        run: ./api/vendor/bin/phpunit api/tests
         working-directory: api
